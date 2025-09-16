@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProject } from "../context/projectProvider";
 import { SelectProject } from "./selectproject";
-import { EditProject } from "./EditProject.jsx";
+import { EditProject } from "./editproject.jsx";
 import { useUser } from "../context/userProvider.jsx";
 import { useNavigate } from "react-router-dom";
 import Emptyproject from "../assets/emptyproject.png";
