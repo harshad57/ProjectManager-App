@@ -11,10 +11,6 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const [open, setopen] = useState(false);
 
-  if (location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/publicprojects" || location.pathname === "/privateprojects" || location.pathname === "/addproject" || location.pathname === "/profile" || location.pathname === "*") {
-    return null;
-  }
-
   const btn = async () => {
     if (authuser) {
       await logout();
@@ -32,6 +28,10 @@ export const Navbar = () => {
     document.body.style.overflow = "auto";
   }
 }, [open]);
+
+if (location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/publicprojects" || location.pathname === "/privateprojects" || location.pathname === "/addproject" || location.pathname === "/profile" || location.pathname === "*") {
+    return null;
+  }
 
   return (
     <nav className="flex z-60 justify-between items-center gap-10 lg:px-8 lg:py-3 py-4 px-4 rounded-xl shadow-md backdrop-blur-md border border-gray-200 fixed w-full">
@@ -89,7 +89,7 @@ export const Navbar = () => {
           Profile
         </Link>
         <button onClick={btn} className="text-center rounded-lg absolute bottom-18 flex lg:hidden mx-auto sm:w-34 text-md font-semibold text-white shadow-md transition cursor-pointer">
-          {authuser ? <div className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg">Logout</div> : <div className="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-lg">Login</div>}
+          {authuser ? <div className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg w-full">Logout</div> : <div className="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-lg w-full">Login</div>}
         </button>
       </div>
 
