@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useProject } from "../context/projectProvider.jsx";
 import { SelectProject } from "./selectproject.jsx";
 import { useNavigate } from "react-router-dom";
-import { EditProject } from "./EditProject.jsx";
-import { useUser } from "../context/userProvider.jsx";
+import { EditProject } from "./editproject.jsx";
 import Emptyproject from "../assets/emptyproject.png";
 import LoaderPage from "../pages/loader.jsx";
 
