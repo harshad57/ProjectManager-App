@@ -44,7 +44,7 @@ export const Navbar = () => {
       <div className="lg:hidden flex">
         <Menu setopen={setopen} open={open} />
       </div>
-      <div className={`flex lg:flex-row flex-col absolute lg:relative right-0 top-0 gap-6 items-center bg-white lg:px-6 px-15 w-3/4 lg:w-auto lg:py-3 pt-10 lg:rounded-xl lg:translate-x-0 rounded-l-lg min-h-screen lg:min-h-auto shadow-md ${open ? "translate-x-0" : "translate-x-full"} transition duration-200`}>
+      <div className={`flex lg:flex-row flex-col absolute lg:relative right-0 top-0 gap-6 items-center bg-white lg:px-6 px-15 w-3/4 lg:w-auto lg:py-3 pt-15 lg:rounded-xl lg:translate-x-0 rounded-l-lg min-h-screen lg:min-h-auto shadow-md ${open ? "translate-x-0" : "translate-x-full"} transition duration-200`}>
         <Link
           to="/"
           className={`px-4 py-2 rounded-lg text-lg font-medium transition-all sm:w-1/2 w-full text-center duration-300 ${location.pathname === "/"
