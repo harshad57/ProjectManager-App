@@ -14,22 +14,27 @@ const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: { origin: "https://project-managerapp.vercel.app" } // allow frontend
+  cors: {
+    origin: "https://project-managerapp.vercel.app",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
-// When client connects
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
-  // Join project room (so comments are scoped per project)
   socket.on("joinProject", (projectId) => {
     socket.join(projectId);
     console.log(`User joined project ${projectId}`);
   });
 
-  // Listen for new comment
   socket.on("newComment", (comment) => {
-    // broadcast to everyone in this project
     io.to(comment.projectId).emit("commentAdded", comment);
   });
 

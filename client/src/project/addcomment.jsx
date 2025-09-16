@@ -18,9 +18,6 @@ export const AddComment = () => {
     useEffect(() => {
     if (!selectedproject) return;
 
-    // join project room
-    socket.emit("joinProject", selectedproject._id);
-
     // listen for new comments
     socket.on("commentAdded", (newComment) => {
       setcomment((prev) => [...prev, newComment]); // append to state
