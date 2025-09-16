@@ -94,8 +94,8 @@ if (location.pathname === "/login" || location.pathname === "/register" || locat
       </div>
 
       <div className="hidden lg:flex">
-        <button onClick={btn} className="rounded-lg bg-indigo-600 px-6 py-2.5 text-md font-semibold text-white shadow-md transition hover:bg-indigo-700 cursor-pointer">
-          {authuser ? "Logout" : "Login"}
+        <button onClick={btn} className="rounded-lg text-md font-semibold text-white shadow-md transition cursor-pointer">
+          {authuser ? <div className="bg-red-600 hover:bg-red-700 px-6 py-2.5 rounded-lg w-full">Logout</div> : <div className="bg-indigo-600 hover:bg-indigo-700 px-6 py-2.5 rounded-lg w-full">Login</div>}
         </button>
       </div>
     </nav>

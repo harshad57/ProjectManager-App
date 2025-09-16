@@ -74,7 +74,7 @@ export const Profile = () => {
           </div>
 
           <button
-            className="bg-red-500 lg:flex hidden hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg absolute bottom-8 left-1/2 -translate-x-1/2 w-4/5 shadow-md transition cursor-pointer"
+            className="bg-red-500 lg:flex hidden hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg absolute bottom-8 left-1/2 -translate-x-1/2 w-4/5 shadow-md transition cursor-pointer text-center"
             onClick={() => { setloading(true); logout; setloading(false); window.location.reload() }}
           >
             {loading ? 'Logging out...' : 'Logout'}
