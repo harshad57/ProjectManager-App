@@ -88,8 +88,8 @@ export const Navbar = () => {
         >
           Profile
         </Link>
-        <button onClick={btn} className="text-center rounded-lg absolute bottom-18 flex lg:hidden bg-indigo-600 mx-auto sm:w-34 px-6 py-2 text-md font-semibold text-white shadow-md transition hover:bg-indigo-700 cursor-pointer">
-          {authuser ? "Logout" : "Login"}
+        <button onClick={btn} className="text-center rounded-lg absolute bottom-18 flex lg:hidden mx-auto sm:w-34 text-md font-semibold text-white shadow-md transition cursor-pointer">
+          {authuser ? <div className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg">Logout</div> : <div className="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-lg">Login</div>}
         </button>
       </div>
 
