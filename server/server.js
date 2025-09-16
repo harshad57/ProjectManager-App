@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: { origin: "*" } // allow frontend
+  cors: { origin: "https://project-managerapp.vercel.app" } // allow frontend
 });
 
 // When client connects
@@ -39,7 +39,7 @@ io.on("connection", (socket) => {
 });
 
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['https://project-managerapp.vercel.app'],
     method: ['get','post','delete','put'],
     credentials: true
 }))
