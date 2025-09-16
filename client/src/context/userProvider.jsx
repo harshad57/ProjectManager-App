@@ -1,5 +1,4 @@
 import axios from "axios";
-import dotenv from 'dotenv';
 import { createContext, useContext, useState, useEffect } from "react";
 
 const backendurl = import.meta.env.VITE_BACKEND_URL;
