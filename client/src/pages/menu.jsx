@@ -5,7 +5,7 @@ const Menu = ({ setopen, open }) => {
     <button
       aria-label="Toggle Menu"
       onClick={() => setopen(!open)}
-      className="flex flex-col gap-2 w-7 z-50 relative border-none outline-none focus:outline-none active:border-0"
+      className="flex flex-col gap-2 w-7 z-70 relative border-none outline-none focus:outline-none active:border-0"
     >
       {/* Top bar */}
       <div

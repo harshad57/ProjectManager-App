@@ -54,7 +54,7 @@ export const Home = () => {
             </div>
 
             {/* Right Image Section */}
-            <div className="flex-1 overflow-hidden md:w-[600px] rounded-xl shadow-lg lg:w-[800px]">
+            <div className="flex-1 overflow-hidden md:w-[600px] rounded-xl shadow-lg lg:w-[800px] relative z-0">
               <Lottie
                         animationData={Image}
                         loop

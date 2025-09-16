@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userProvider";
 import logo from "../assets/logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Menu from "./menu";
 
 export const Navbar = () => {
@@ -25,8 +25,16 @@ export const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+  if (open) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+}, [open]);
+
   return (
-    <nav className="flex justify-between items-center gap-10 lg:px-8 lg:py-3 py-4 px-4 rounded-xl shadow-md backdrop-blur-md border border-gray-200 fixed w-full">
+    <nav className="flex z-60 justify-between items-center gap-10 lg:px-8 lg:py-3 py-4 px-4 rounded-xl shadow-md backdrop-blur-md border border-gray-200 fixed w-full">
       <div>
         <a href="/" className="inline-flex items-center gap-3 lg:text-2xl text-xl font-bold text-indigo-600" aria-label="logo">
           <img src={logo} alt="Project Flow Logo" className="h-7 w-auto" />
