@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+  withCredentials: true,
+});
 
 const backendurl = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,7 +19,6 @@ export const ProjectProvider = ({ children }) => {
   const [comment, setcomment] = useState([]);
   const [selectedproject, setselectedproject] = useState(null);
 
-  // ✅ loading state for each action
   const [loading, setLoading] = useState({
     Projects: false,
     fetchPublicProjects: false,
@@ -28,7 +31,25 @@ export const ProjectProvider = ({ children }) => {
     addComment: false,
   });
 
-  // ✅ helper to update specific loading key
+   useEffect(() => {
+    if (selectedproject) {
+      socket.emit("joinProject", selectedproject._id);
+
+      (async () => {
+        await fetchtask(selectedproject._id);
+        await fetchcomment(selectedproject._id);
+      })();
+
+      socket.on("commentAdded", (newComment) => {
+        setcomment((prev) => [...prev, newComment]);
+      });
+
+      return () => {
+        socket.off("commentAdded");
+      };
+    }
+  }, [selectedproject]);
+
   const setLoadingState = (key, value) => {
     setLoading((prev) => ({ ...prev, [key]: value }));
   };
@@ -181,7 +202,7 @@ export const ProjectProvider = ({ children }) => {
     }
   };
 
-  const addcomment = async (projectId, message, authuser) => {
+  const addcomment = async (projectId, message) => {
     try {
       setLoadingState("addComment", true);
       const { data } = await axios.post(`${backendurl}/api/comments/add`, {
@@ -190,18 +211,7 @@ export const ProjectProvider = ({ children }) => {
       }, {
         withCredentials: true
       });
-
-      const populatedComment = {
-        ...data,
-        userId: {
-          _id: authuser._id,
-          name: authuser.name,
-        },
-      };
-
-      setcomment((prev) => [...prev, populatedComment]);
-
-      return populatedComment;
+      return data;
     } catch (err) {
       console.error(err);
     } finally {

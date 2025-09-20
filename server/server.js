@@ -27,15 +27,8 @@ app.use((req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-
   socket.on("joinProject", (projectId) => {
     socket.join(projectId);
-    console.log(`User joined project ${projectId}`);
-  });
-
-  socket.on("newComment", (comment) => {
-    io.to(comment.projectId).emit("commentAdded", comment);
   });
 
   socket.on("disconnect", () => {

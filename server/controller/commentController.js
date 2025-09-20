@@ -10,7 +10,7 @@ const addcomment = async (req, res) => {
 
     const populatedComment = await comment.populate("userId", "name email");
 
-    req.io.to(req.body.projectId.toString()).emit("commentAdded", populatedComment);
+    req.io.to(req.body.projectId).emit("commentAdded", populatedComment);
 
     res.status(201).json(populatedComment);
   } catch (err) {

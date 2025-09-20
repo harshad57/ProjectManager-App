@@ -6,6 +6,7 @@ import { useUser } from "../context/userProvider.jsx";
 import { useNavigate } from "react-router-dom";
 import Emptyproject from "../assets/emptyproject.png";
 import LoaderPage from "../pages/loader.jsx";
+import toast from "react-hot-toast";
 
 export const PublicProject = () => {
   const { publicprojects, fetchpublicprojects, loading, selectproject, selectedproject, deleteproject } = useProject();
@@ -38,14 +39,13 @@ export const PublicProject = () => {
 
   return (
     <>
-    <div
-        className={`py-6 lg:px-12 px-6 bg-gradient-to-r from-indigo-50 to-indigo-100 min-h-screen ${
-          editingProject
-            ? "blur-sm brightness-75 pointer-events-none cursor-none"
-            : ""
-        }`}
+      <div
+        className={`py-6 lg:px-12 px-6 bg-gradient-to-r from-indigo-50 to-indigo-100 min-h-screen ${editingProject
+          ? "blur-sm brightness-75 pointer-events-none cursor-none"
+          : ""
+          }`}
       >
-      <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Public Projects</h1>
           <button
             onClick={() => navigate("/projects")}
@@ -55,12 +55,12 @@ export const PublicProject = () => {
           </button>
         </div>
 
-      {loading.fetchPublicProjects ? (
-        <div><LoaderPage /></div>
-      ) : publicprojects && publicprojects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {publicprojects.map((project) => (
-            <div
+        {loading.fetchPublicProjects ? (
+          <div><LoaderPage /></div>
+        ) : publicprojects && publicprojects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {publicprojects.map((project) => (
+              <div
                 key={project._id}
                 className="relative flex flex-col bg-white shadow-md border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
@@ -68,9 +68,13 @@ export const PublicProject = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      setOpenProjectId((prev) =>
-                        prev === project._id ? null : project._id
-                      );
+                      if (authuser._id === project.owner._id) {
+                        setOpenProjectId((prev) =>
+                          prev === project._id ? null : project._id
+                        );
+                      } else {
+                        toast.error("only owner can edit or delete the project");
+                      }
                     }}
                     className="inline-block text-gray-500 hover:bg-gray-100 
                     dark:hover:bg-gray-200 border-0 focus:outline-none rounded-lg text-sm p-1.5"
@@ -117,32 +121,31 @@ export const PublicProject = () => {
                     </div>
                   )}
                 </div>
-              {/* Header */}
-              <div
-                onClick={() =>
-                  authuser ? selectproject(project) : navigate("/login")
-                }
-                className="mb-4 cursor-pointer flex-1 p-6"
-              >
+                {/* Header */}
                 <div
-                    className={`mb-4 rounded-md py-1 px-3 text-xs font-medium inline-block text-center ${
-                      project.visibility === "public"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-rose-100 text-rose-700"
-                    }`}
+                  onClick={() =>
+                    authuser ? selectproject(project) : navigate("/login")
+                  }
+                  className="mb-4 cursor-pointer flex-1 p-6"
+                >
+                  <div
+                    className={`mb-4 rounded-md py-1 px-3 text-xs font-medium inline-block text-center ${project.visibility === "public"
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-rose-100 text-rose-700"
+                      }`}
                   >
                     {project.visibility}
                   </div>
 
-                <h6 className="mb-2 text-gray-800 text-xl font-semibold">
+                  <h6 className="mb-2 text-gray-800 text-xl font-semibold">
                     {project.name}
                   </h6>
                   <p className="text-gray-600 leading-normal text-sm line-clamp-3">
                     {project.description}
                   </p>
-              </div>
+                </div>
 
-              <div className="flex items-center justify-between p-4 border-t rounded-lg shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+                <div className="flex items-center justify-between p-4 border-t rounded-lg shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
                   <div className="flex items-center">
                     <div className="w-9 h-9 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
                       {project.owner?.name?.[0]?.toUpperCase() || "U"}
@@ -157,27 +160,27 @@ export const PublicProject = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 justify-center items-center absolute top-92 -translate-y-1/2 left-1/2 -translate-x-1/2">
+            <img src={Emptyproject} alt="No project" className="w-96" />
+            <div className="font-medium text-gray-500 text-lg whitespace-nowrap">
+              don't have any project !
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col gap-4 justify-center items-center absolute top-92 -translate-y-1/2 left-1/2 -translate-x-1/2">
-                    <img src={Emptyproject} alt="No project" className="w-96" />
-                    <div className="font-medium text-gray-500 text-lg whitespace-nowrap">
-                      You don't have any project !
-                    </div>
-                  </div>
-      )}
-    </div>
+          </div>
+        )}
+      </div>
 
       {selectedproject && (
-              <SelectProject
-                selectedproject={selectedproject}
-                selectproject={selectproject}
-              />
-            )}
+        <SelectProject
+          selectedproject={selectedproject}
+          selectproject={selectproject}
+        />
+      )}
 
-    {editingProject && (
+      {editingProject && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[400px]">
             <EditProject

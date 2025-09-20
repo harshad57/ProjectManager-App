@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useUser } from '../context/userProvider';
+import toast from "react-hot-toast";
 
 function UpdatePassword() {
   const {updatepassword} = useUser();
@@ -12,6 +13,7 @@ function UpdatePassword() {
     e.preventDefault();
     setloading(true);
     const res = await updatepassword(oldpassword, newpassword, confirmpassword);
+    toast.success("updated successfully");
     setloading(false);
 
     if (res.success) {

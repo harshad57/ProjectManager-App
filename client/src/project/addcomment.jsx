@@ -3,50 +3,44 @@ import { useProject } from "../context/projectProvider"
 import { useUser } from "../context/userProvider";
 import LoaderPage from "../pages/loader";
 import SmallLoaderPage from "../pages/smallloader";
-import { io } from "socket.io-client";
-
-const backendurl = import.meta.env.VITE_BACKEND_URL;
-const socket = io(backendurl);
+import { socket } from "../socket"; 
 
 export const AddComment = () => {
     const { comment, addcomment, selectedproject, loading, setcomment } = useProject();
-    const {authuser} = useUser();
+    const { authuser } = useUser();
     const [message, setmessage] = useState('');
 
     const bottomRef = useRef(null); 
 
-    useEffect(() => {
-    if (!selectedproject) return;
+useEffect(() => {
+  if (!selectedproject) return;
 
-    // listen for new comments
-    socket.on("commentAdded", (newComment) => {
-      setcomment((prev) => [...prev, newComment]); // append to state
+  const handleNewComment = (newComment) => {
+    setcomment((prev) => {
+      if (prev.some((c) => c._id === newComment._id)) return prev;
+      return [...prev, newComment];
     });
-
-    return () => {
-      socket.off("commentAdded");
-    };
-  }, [selectedproject]);
-
-  const send = async () => {
-    if (!message.trim()) return;
-
-    const newComment = await addcomment(selectedproject._id, message, authuser);
-
-    // Emit through socket (with populated user info)
-    socket.emit("newComment", {
-      ...newComment,
-      userId: authuser, // attach current user info so no undefined
-    });
-
-    setmessage("");
   };
 
+  socket.on("commentAdded", handleNewComment);
+
+  return () => {
+    socket.off("commentAdded", handleNewComment);
+  };
+}, [selectedproject]); 
+
+    const send = async () => {
+      if (!message.trim()) return;
+
+      await addcomment(selectedproject._id, message, authuser);
+      setmessage("");
+    };
+
     useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [comment]);
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, [comment]);
 
     return (
         <>
@@ -96,7 +90,6 @@ export const AddComment = () => {
                     {loading.addComment ? <SmallLoaderPage /> : "Send"}
                 </button>
             </div>
-
         </>
     )
 }
